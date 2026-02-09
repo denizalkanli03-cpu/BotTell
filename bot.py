@@ -91,7 +91,29 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("💬 چت خصوصی", url=CHANNEL_DIRECT_LINK)],
         [InlineKeyboardButton("🕵️ چت ناشناس با ادمین", callback_data="anon_start")]
     ]
-    text = "🚀 **به ربات نظرات دانشجویی خوش آمدید!**\n\nتجربیات خود را به اشتراک بگذارید و به بقیه کمک کنید."
+    text = """🎓 به ربات نظرات دانشجویی خوش اومدی!
+
+اینجا یه فضای سراسریه برای همه دانشجوهای دانشگاه‌های کشور تا تجربه‌هاشون رو درباره:
+
+👨🏻‍🏫 اساتید
+📚 نحوه تدریس
+📝 امتحان‌ها
+📊 نمره‌دهی
+و فضای درسی
+
+با بقیه به اشتراک بذارن.
+
+هدف ما اینه که قبل از انتخاب واحد یا برداشتن درس، بتونی با آگاهی بیشتر تصمیم بگیری — بر اساس تجربه واقعی بقیه دانشجوها، نه حدس و شنیده‌ها.
+
+🔎 چطور نظرها رو پیدا کنی؟
+داخل چنل کافیه:
+اسم دانشگاه یا استاد رو جستجو کنی تا همه نظرهای ثبت‌شده برات بیاد.
+
+✍🏻 تو هم می‌تونی تجربه‌ت رو ثبت کنی و به بقیه کمک کنی انتخاب بهتری داشته باشن.
+
+🤝 لطفاً محترمانه و منصفانه نظر بده تا این فضا برای همه مفید و قابل اعتماد بمونه.
+
+موفق باشی تو مسیر دانشگاه ✨"""
     if update.message:
         await update.message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard), parse_mode="Markdown")
     else:
@@ -217,7 +239,7 @@ async def submit_form(update: Update, context: ContextTypes.DEFAULT_TYPE):
     kb = [[InlineKeyboardButton("✅ تایید انتشار", callback_data=f"admin_accept:{query.from_user.id}"),
            InlineKeyboardButton("❌ رد فرم", callback_data=f"admin_reject:{query.from_user.id}")]]
     await context.bot.send_message(chat_id=ADMIN_ID, text=f"📥 فرم جدید:\n\n{summary}", reply_markup=InlineKeyboardMarkup(kb), parse_mode="Markdown")
-    await query.message.edit_text("📨 فرم شما برای ادمین ارسال شد. پس از بررسی در کانال منتشر می‌شود.")
+    await query.message.edit_text("📨/start فرم شما برای ادمین ارسال شد. پس از بررسی در کانال منتشر می‌شود.")
 
 async def admin_actions(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -234,7 +256,7 @@ async def admin_actions(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def delete_form(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    await query.message.edit_text("❌ عملیات لغو شد.")
+    await query.message.edit_text("❌/start عملیات لغو شد.")
     return ConversationHandler.END
 
 # ================= GLOBAL SESSIONS =================
@@ -266,7 +288,7 @@ async def end_chat(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if user_id == ADMIN_ID and user_id in reply_sessions:
         target_id = reply_sessions[user_id]
         if target_id in active_chats: del active_chats[target_id]
-        await context.bot.send_message(chat_id=target_id, text="🔚 ادمین به این گفتگو پایان داد.")
+        await context.bot.send_message(chat_id=target_id, text="🔚/start ادمین به این گفتگو پایان داد.")
         del reply_sessions[user_id]
 
     await query.message.edit_text("✅ چت پایان یافت. برای شروع مجدد /start را بزنید.")
@@ -383,3 +405,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
