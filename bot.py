@@ -17,12 +17,12 @@ def run_flask():
     app_flask.run(host='0.0.0.0', port=port)
 
 # ================= CONFIG =================
-TOKEN = "8274462683:AAHtwOJ6_L2pUZMI8ndFp8fMMZJVd_5nsZE"
+TOKEN = "8558196271:AAGsm4xqHnFeT7avPKcOVJvcy5pWrq5ZlN0"
 ADMIN_ID = 7997819976
-CHANNEL_ID = "@National_students_uni"
-BOT_USERNAME = "@NationalstudentsBot"
+CHANNEL_ID = "@UniVoiceHub"
+BOT_USERNAME = "@UniEchoFeedbackBot"
 CHANNEL_DIRECT_LINK = "https://t.me/UniVoiceHub?direct"
-CHANNEL_TAG = "@National_students_uni"
+CHANNEL_TAG = "@UniVoiceHub"
 
 # ================= STATES =================
 (SELECT_UNI, ASK_OTHER_UNI, ASK_PROF, ASK_COURSE, ASK_TEACHING, ASK_ETHICS, ASK_NOTES,
@@ -381,4 +381,5 @@ def main():
     app.run_polling()
 
 if __name__ == "__main__":
+
     main()
