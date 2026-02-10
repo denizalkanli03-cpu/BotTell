@@ -425,12 +425,10 @@ async def handle_reactions(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # حتماً این هندلر را اضافه کن:
 app.add_handler(CallbackQueryHandler(handle_reactions, pattern="^(like|dislike):"))
-    print("✅ ربات با قابلیت انتخاب دانشگاه آنلاین شد!")
-    app.run_polling()
-
 if __name__ == "__main__":
-
+    print("✅ Bot is Starting...")
     main()
+
 
 
 
