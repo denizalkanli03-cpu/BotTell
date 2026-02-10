@@ -359,6 +359,32 @@ async def admin_reply_start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # ================= MAIN =================
 
+# ابتدا تابع واکنش‌ها را اینجا تعریف می‌کنیم (بیرون از مِین)
+async def handle_reactions(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    msg_id = int(query.data.split(":")[1])
+    action = query.data.split(":")[0]
+    user_id = query.from_user.id
+
+    if msg_id not in post_reactions:
+        post_reactions[msg_id] = {"likes": set(), "dislikes": set()}
+
+    if action == "like":
+        if user_id in post_reactions[msg_id]["likes"]:
+            post_reactions[msg_id]["likes"].remove(user_id)
+        else:
+            post_reactions[msg_id]["likes"].add(user_id)
+            post_reactions[msg_id]["dislikes"].discard(user_id)
+    elif action == "dislike":
+        if user_id in post_reactions[msg_id]["dislikes"]:
+            post_reactions[msg_id]["dislikes"].remove(user_id)
+        else:
+            post_reactions[msg_id]["dislikes"].add(user_id)
+            post_reactions[msg_id]["likes"].discard(user_id)
+
+    await query.edit_message_reply_markup(reply_markup=reaction_keyboard(msg_id))
+    await query.answer()
+
 
 def main():
     threading.Thread(target=run_flask, daemon=True).start()
@@ -389,44 +415,23 @@ def main():
         fallbacks=[CallbackQueryHandler(delete_form, pattern="^delete_form$"), CommandHandler("start", start)]
     )
 
+    # افزودن تمام هندلرها به APP (همه باید اینجا باشند)
     app.add_handler(CommandHandler("start", start))
-
     app.add_handler(conv)
     app.add_handler(CallbackQueryHandler(submit_form, pattern="^submit_form$"))
     app.add_handler(CallbackQueryHandler(admin_actions, pattern="^admin_"))
     app.add_handler(CallbackQueryHandler(anon_start, pattern="^anon_start$"))
-    app.add_handler(CallbackQueryHandler(lambda u,c: reply_sessions.update({ADMIN_ID: int(u.callback_query.data.split(":")[1])}) or u.callback_query.message.reply_text("پاسخ را بنویسید:"), pattern="^reply_to:"))
+    app.add_handler(CallbackQueryHandler(handle_reactions, pattern="^(like|dislike):")) # دکمه‌های لایک
     app.add_handler(CallbackQueryHandler(end_chat, pattern="^end_chat$"))
+    
+    # هندلر پاسخ ادمین و دریافت پیام
+    app.add_handler(CallbackQueryHandler(admin_reply_start, pattern="^reply_to:"))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, receive_msg))
-async def handle_reactions(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    query = update.callback_query
-    msg_id = int(query.data.split(":")[1])
-    action = query.data.split(":")[0]
-    user_id = query.from_user.id
 
-    if msg_id not in post_reactions:
-        post_reactions[msg_id] = {"likes": set(), "dislikes": set()}
-
-    if action == "like":
-        if user_id in post_reactions[msg_id]["likes"]:
-            post_reactions[msg_id]["likes"].remove(user_id)
-        else:
-            post_reactions[msg_id]["likes"].add(user_id)
-            post_reactions[msg_id]["dislikes"].discard(user_id)
-    elif action == "dislike":
-        if user_id in post_reactions[msg_id]["dislikes"]:
-            post_reactions[msg_id]["dislikes"].remove(user_id)
-        else:
-            post_reactions[msg_id]["dislikes"].add(user_id)
-            post_reactions[msg_id]["likes"].discard(user_id)
-
-    await query.edit_message_reply_markup(reply_markup=reaction_keyboard(msg_id))
-    await query.answer()
-
-# حتماً این هندلر را اضافه کن:
-app.add_handler(CallbackQueryHandler(handle_reactions, pattern="^(like|dislike):"))
-if __name__ == "__main__":
     print("✅ Bot is Starting...")
+    app.run_polling()
+
+if __name__ == "__main__":
     main()
 
 
