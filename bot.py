@@ -238,7 +238,7 @@ async def submit_form(update: Update, context: ContextTypes.DEFAULT_TYPE):
     summary = build_form_text(context.user_data)
     kb = [[InlineKeyboardButton("✅ تایید انتشار", callback_data=f"admin_accept:{query.from_user.id}"),
            InlineKeyboardButton("❌ رد فرم", callback_data=f"admin_reject:{query.from_user.id}")]]
-    await context.bot.send_message(chat_id=ADMIN_ID, text=f"📥 فرم جدید:\n\n{summary}", reply_markup=InlineKeyboardMarkup(kb), parse_mode="Markdown")
+    await context.bot.send_message(chat_id=6667159717, text=f"📥 فرم جدید:\n\n{summary}", reply_markup=InlineKeyboardMarkup(kb), parse_mode="Markdown")
     await query.message.edit_text("📨/start فرم شما برای ادمین ارسال شد. پس از بررسی در کانال منتشر می‌شود.")
 
 async def admin_actions(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -247,7 +247,7 @@ async def admin_actions(update: Update, context: ContextTypes.DEFAULT_TYPE):
     action, user_id = query.data.split(":")
     if action == "admin_accept":
         text = query.message.text.replace("📥 فرم جدید:\n\n", "")
-        msg = await context.bot.send_message(chat_id=CHANNEL_ID, text=text, parse_mode="Markdown")
+        msg = await context.bot.send_message(chat_id=-1003574115178, text=text, parse_mode="Markdown")
         post_reactions[msg.message_id] = {"likes": set(), "dislikes": set()}
         await msg.edit_reply_markup(reply_markup=reaction_keyboard(msg.message_id))
         await context.bot.send_message(chat_id=user_id, text="✅ نظر شما در کانال منتشر شد.")
@@ -433,6 +433,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
