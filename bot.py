@@ -17,10 +17,10 @@ def run_flask():
     app_flask.run(host='0.0.0.0', port=port)
 
 # ================= CONFIG =================
-TOKEN = "8558196271:AAGsm4xqHnFeT7avPKcOVJvcy5pWrq5ZlN0"
-ADMIN_ID = 7997819976
+TOKEN = "8578964590:AAGdGPSCP1wGHZBmB-j00QD10RxC4U-JH4Y"
+ADMIN_ID = 6667159717
 CHANNEL_ID = "@UniVoiceHub"
-BOT_USERNAME = "@UniEchoFeedbackBot"
+BOT_USERNAME = "@UnifeedbacktecBot"
 CHANNEL_DIRECT_LINK = "https://t.me/UniVoiceHub?direct"
 CHANNEL_TAG = "@UniVoiceHub"
 
@@ -433,6 +433,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
