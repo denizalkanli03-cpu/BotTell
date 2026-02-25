@@ -18,7 +18,7 @@ def run_flask():
 
 # ================= CONFIG =================
 TOKEN = "8578964590:AAGdGPSCP1wGHZBmB-j00QD10RxC4U-JH4Y"
-ADMIN_ID = 6667159717
+ADMIN_ID = 7997819976
 CHANNEL_ID = "@UniVoiceHub"
 BOT_USERNAME = "@UnifeedbacktecBot"
 CHANNEL_DIRECT_LINK = "https://t.me/UniVoiceHub?direct"
@@ -433,6 +433,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
